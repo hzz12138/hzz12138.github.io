@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: https://hzz12138.github.io/sitemap.xml
