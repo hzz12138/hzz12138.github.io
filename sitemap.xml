@@ -16,6 +16,27 @@
   </url>
   
   <url>
+    <loc>https://hzz12138.github.io/</loc>
+    <lastmod>2021-04-14T13:49:24+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://hzz12138.github.io/post/myfirst/</loc>
+    <lastmod>2021-04-14T13:49:24+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://hzz12138.github.io/post/</loc>
+    <lastmod>2021-04-14T13:49:24+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://hzz12138.github.io/categories/</loc>
     <lastmod>2018-11-05T16:01:23+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -32,20 +53,6 @@
   <url>
     <loc>https://hzz12138.github.io/categories/category-3/</loc>
     <lastmod>2018-07-10T00:00:00+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://hzz12138.github.io/</loc>
-    <lastmod>2018-11-05T16:01:23+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://hzz12138.github.io/post/</loc>
-    <lastmod>2018-11-05T16:01:23+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -235,6 +242,12 @@
   <url>
     <loc>https://hzz12138.github.io/tags/tag-5/</loc>
     <lastmod>2018-11-05T16:01:23+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://hzz12138.github.io/post/python%E7%89%88gee%E9%85%8D%E7%BD%AE/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

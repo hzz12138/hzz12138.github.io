@@ -6,7 +6,7 @@
     <description>Recent content in Posts on Hzz的地球调查组</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 10 Jul 2018 00:00:00 +0800</lastBuildDate><atom:link href="https://hzz12138.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 14 Apr 2021 13:49:24 +0800</lastBuildDate><atom:link href="https://hzz12138.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Theme preview</title>
       <link>https://hzz12138.github.io/post/even-preview/</link>
@@ -14,6 +14,15 @@
       
       <guid>https://hzz12138.github.io/post/even-preview/</guid>
       <description>Based on MarkdownPreview test.md. Markdown 1 2 3 4 5 6 7 8 # H1 ## H2 ### H3 #### H4 ##### H5 ###### H6 ### Duplicate Header ### Duplicate Header H1 H2 H3 H4 H5 H6 Duplicate Header Duplicate Header Paragraphs 1 2 3 4 This is a paragraph. I am still part of the paragraph. New paragraph. This is a paragraph. I am still part of the paragraph.</description>
+    </item>
+    
+    <item>
+      <title>Myfirst</title>
+      <link>https://hzz12138.github.io/post/myfirst/</link>
+      <pubDate>Wed, 14 Apr 2021 13:49:24 +0800</pubDate>
+      
+      <guid>https://hzz12138.github.io/post/myfirst/</guid>
+      <description>21321 </description>
     </item>
     
     <item>
@@ -191,6 +200,15 @@ Andrew-&amp;gt;&amp;gt;China: I am good thanks!
 &lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://hzz12138.github.io/post/python%E7%89%88gee%E9%85%8D%E7%BD%AE/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://hzz12138.github.io/post/python%E7%89%88gee%E9%85%8D%E7%BD%AE/</guid>
+      <description>Python版Gee配置 [TOC] 1. Python环境配置 1.1 Python安装 Anaconda 是一个python的发行版，包括了python和很多常见的软件库, 和一个</description>
     </item>
     
   </channel>
