@@ -6,23 +6,14 @@
     <description>Recent content in Posts on Hzz的地球调查组</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 14 Apr 2021 13:49:24 +0800</lastBuildDate><atom:link href="https://hzz12138.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 14 Apr 2021 14:20:24 +0800</lastBuildDate><atom:link href="https://hzz12138.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Myfirst</title>
-      <link>https://hzz12138.github.io/post/myfirst/</link>
-      <pubDate>Wed, 14 Apr 2021 13:49:24 +0800</pubDate>
-      
-      <guid>https://hzz12138.github.io/post/myfirst/</guid>
-      <description>21321 </description>
-    </item>
-    
-    <item>
-      <title></title>
+      <title>Python版GEE配置</title>
       <link>https://hzz12138.github.io/post/python%E7%89%88gee%E9%85%8D%E7%BD%AE/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 14 Apr 2021 14:20:24 +0800</pubDate>
       
       <guid>https://hzz12138.github.io/post/python%E7%89%88gee%E9%85%8D%E7%BD%AE/</guid>
-      <description>Python版Gee配置 [TOC] 1. Python环境配置 1.1 Python安装 Anaconda 是一个python的发行版，包括了python和很多常见的软件库, 和一个</description>
+      <description>Python版Gee配置 1. Python环境配置 1.1 Python安装 Anaconda 是一个python的发行版，包括了python和很多常见的软件库, 和一个包</description>
     </item>
     
   </channel>
