@@ -1,0 +1,42 @@
+---
+title: "Python版GEE学习笔记（二）-geemap"
+date: 2021-04-15T21:10:24+08:00
+draft: false
+tags: ["Python", "Google earth engine", "jupyterlab"]
+categories: ["Google earth engine"]
+---
+
+# Python版GEE学习笔记（二）-geemap
+
+**geemap是吴秋生老师开发的python模块，可以极大地提高使用Python API GEE用户的使用体验（亲测好评），官方介绍如下：**
+
+![image-20210415202520953](https://cdn.jsdelivr.net/gh/hzz12138/typora_img@master/img/image-20210415202520953.png)
+
+```xml
+geemap官网：https://geemap.org/
+geemap Github: https://github.com/giswqs/geemap
+```
+
+## geemap的安装
+
+**我是用的Anaconda，因此新建的env，即用红框里的操作。**
+
+![image-20210415202955554](https://cdn.jsdelivr.net/gh/hzz12138/typora_img@master/img/image-20210415202955554.png)
+
+```
+安装视频教程：https://www.youtube.com/watch?v=h0pz3S6Tvx0
+```
+
+安装好后，打开地图界面：
+
+```python
+import geemap
+Map = geemap.Map()
+Map
+```
+
+![image-20210415203255349](https://cdn.jsdelivr.net/gh/hzz12138/typora_img@master/img/image-20210415203255349.png)
+
+
+
+后续功能可查看吴老师的视频教程与Jupyter笔记本，非常棒！

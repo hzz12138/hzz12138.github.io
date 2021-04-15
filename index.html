@@ -126,118 +126,69 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/even-preview/">Theme preview</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/python%E7%89%88gee%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%89-%E5%BD%B1%E5%83%8F%E7%AD%9B%E9%80%89/">Python版GEE学习笔记（三）-影像筛选</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2018-07-10 </span>
+      <span class="post-time"> 2021-04-15 </span>
       <div class="post-category">
-          <a href="/categories/theme-preview/"> Theme preview </a>
-          <a href="/categories/category-2/"> category-2 </a>
-          <a href="/categories/category-3/"> category-3 </a>
+          <a href="/categories/google-earth-engine/"> Google earth engine </a>
           </div>
-        <span class="more-meta"> 约 3018 字 </span>
-        <span class="more-meta"> 预计阅读 7 分钟 </span>
+        <span class="more-meta"> 约 239 字 </span>
+        <span class="more-meta"> 预计阅读 1 分钟 </span>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      Based on MarkdownPreview test.md. Markdown 1 2 3 4 5 6 7 8 # H1 ## H2 ### H3 #### H4 ##### H5 ###### H6 ### Duplicate Header ### Duplicate Header H1 H2 H3 H4 H5 H6 Duplicate Header Duplicate Header Paragraphs 1 2 3 4 This is a paragraph. I am still part of the paragraph. New paragraph. This is a paragraph. I am still part of the paragraph.
+      Python版GEE学习笔记（三）-影像筛选 常用的筛选命令： 按年月日 1 .filterDate(&#34;2013-05-01&#34;, &#34;2020-12-31&#34;) 按某年、某月份 1 .filter(ee.Filter.calendarRange(2013,2020,&#39;year&#39;)).filter(ee.Filter.calendarRange(4,11,&#39;month&#39;)) 按行列号 1 2 .filter(ee.Filter.eq(&#39;WRS_PATH&#39;,124))\ .filter(ee.Filter.eq(&#39;WRS_ROW&#39;,30)) 按云量 1 .filter(ee.Filter.lt(&#39;CLOUD_COVER&#39;,3)) 其他筛选命令可到GEE
     </div>
     <div class="read-more">
-      <a href="/post/even-preview/" class="read-more-link">阅读更多</a>
+      <a href="/post/python%E7%89%88gee%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%89-%E5%BD%B1%E5%83%8F%E7%AD%9B%E9%80%89/" class="read-more-link">阅读更多</a>
     </div>
   </div>
 </article>
 
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/python%E7%89%88gee%E9%85%8D%E7%BD%AE/">Python版GEE配置</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/python%E7%89%88gee%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%9B%9B-l7%E5%BD%B1%E5%83%8F%E7%9A%84%E6%9D%A1%E5%B8%A6%E5%A4%84%E7%90%86/">Python版GEE学习笔记（四）-L7影像的条带处理</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-04-15 </span>
+      <div class="post-category">
+          <a href="/categories/google-earth-engine/"> Google earth engine </a>
+          </div>
+        <span class="more-meta"> 约 522 字 </span>
+        <span class="more-meta"> 预计阅读 2 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      Python版GEE学习笔记（四）-L7影像的条带处理 L7从2003年开始SLC坏了，影像出现了条带，具体原理就不放了。 80年代到2012年
+    </div>
+    <div class="read-more">
+      <a href="/post/python%E7%89%88gee%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%9B%9B-l7%E5%BD%B1%E5%83%8F%E7%9A%84%E6%9D%A1%E5%B8%A6%E5%A4%84%E7%90%86/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/python%E7%89%88gee%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%80-%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">Python版GEE学习笔记（一）-环境配置</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2021-04-14 </span>
       <div class="post-category">
           <a href="/categories/google-earth-engine/"> Google earth engine </a>
           </div>
-        <span class="more-meta"> 约 1263 字 </span>
+        <span class="more-meta"> 约 1273 字 </span>
         <span class="more-meta"> 预计阅读 3 分钟 </span>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      Python版Gee配置 1. Python环境配置 1.1 Python安装 Anaconda 是一个python的发行版，包括了python和很多常见的软件库, 和一个包
+      Python版GEE学习笔记（一）-环境配置 1. Python环境配置 1.1 Python安装 Anaconda 是一个python的发行版，包括了python和很多常
     </div>
     <div class="read-more">
-      <a href="/post/python%E7%89%88gee%E9%85%8D%E7%BD%AE/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/english-preview/">[English] Creating a New Theme</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2017-08-31 </span>
-      <div class="post-category">
-          <a href="/categories/english/"> English </a>
-          </div>
-        <span class="more-meta"> 约 7830 字 </span>
-        <span class="more-meta"> 预计阅读 37 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      Introduction This tutorial will show you how to create a simple theme in Hugo. I assume that you are familiar with HTML, the bash command line, and that you are comfortable using Markdown to format content. I&rsquo;ll explain how Hugo uses templates and how you can organize your templates to create a theme. I won&rsquo;t cover using CSS to style your theme.
-We&rsquo;ll start with creating a new site with a very basic template.
-    </div>
-    <div class="read-more">
-      <a href="/post/english-preview/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/japanese-preview/">[日本語] 敬語体系</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2017-08-30 </span>
-      <div class="post-category">
-          <a href="/categories/%E6%97%A5%E6%9C%AC%E8%AA%9E/"> 日本語 </a>
-          </div>
-        <span class="more-meta"> 约 1316 字 </span>
-        <span class="more-meta"> 预计阅读 3 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      日本語の敬語体系は、一般に、大きく尊敬語・謙譲語・丁寧語に分類される。文化審議会国語分科会は、2007年2月に「敬語の指針」を答申し、これに
-    </div>
-    <div class="read-more">
-      <a href="/post/japanese-preview/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/chinese-preview/">[中文] 《长恨歌》</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2017-08-30 </span>
-      <div class="post-category">
-          <a href="/categories/%E4%B8%AD%E6%96%87/"> 中文 </a>
-          </div>
-        <span class="more-meta"> 约 1026 字 </span>
-        <span class="more-meta"> 预计阅读 3 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      《长恨歌》是中国唐朝诗人白居易的一首长篇叙事诗。 第一段：贵妃受宠爱 汉皇重色思倾国，御宇多年求不得。杨家有女初长成，养在深闺人未识。 天生丽质难
-    </div>
-    <div class="read-more">
-      <a href="/post/chinese-preview/" class="read-more-link">阅读更多</a>
+      <a href="/post/python%E7%89%88gee%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%80-%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" class="read-more-link">阅读更多</a>
     </div>
   </div>
 </article>
@@ -246,10 +197,7 @@ We&rsquo;ll start with creating a new site with a very basic template.
   
   <nav class="pagination">
     
-    <a class="next" href="/page/2/">
-        <span class="next-text">下一页</span>
-        <i class="iconfont icon-right"></i>
-      </a>
+    
   </nav>
         </div>
         

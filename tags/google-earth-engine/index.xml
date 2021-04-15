@@ -6,14 +6,32 @@
     <description>Recent content in Google earth engine on Hzz的地球调查组</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 14 Apr 2021 14:20:24 +0800</lastBuildDate><atom:link href="https://hzz12138.github.io/tags/google-earth-engine/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 15 Apr 2021 21:10:24 +0800</lastBuildDate><atom:link href="https://hzz12138.github.io/tags/google-earth-engine/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Python版GEE配置</title>
-      <link>https://hzz12138.github.io/post/python%E7%89%88gee%E9%85%8D%E7%BD%AE/</link>
+      <title>Python版GEE学习笔记（三）-影像筛选</title>
+      <link>https://hzz12138.github.io/post/python%E7%89%88gee%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%89-%E5%BD%B1%E5%83%8F%E7%AD%9B%E9%80%89/</link>
+      <pubDate>Thu, 15 Apr 2021 21:10:24 +0800</pubDate>
+      
+      <guid>https://hzz12138.github.io/post/python%E7%89%88gee%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%89-%E5%BD%B1%E5%83%8F%E7%AD%9B%E9%80%89/</guid>
+      <description>Python版GEE学习笔记（三）-影像筛选 常用的筛选命令： 按年月日 1 .filterDate(&amp;#34;2013-05-01&amp;#34;, &amp;#34;2020-12-31&amp;#34;) 按某年、某月份 1 .filter(ee.Filter.calendarRange(2013,2020,&amp;#39;year&amp;#39;)).filter(ee.Filter.calendarRange(4,11,&amp;#39;month&amp;#39;)) 按行列号 1 2 .filter(ee.Filter.eq(&amp;#39;WRS_PATH&amp;#39;,124))\ .filter(ee.Filter.eq(&amp;#39;WRS_ROW&amp;#39;,30)) 按云量 1 .filter(ee.Filter.lt(&amp;#39;CLOUD_COVER&amp;#39;,3)) 其他筛选命令可到GEE</description>
+    </item>
+    
+    <item>
+      <title>Python版GEE学习笔记（四）-L7影像的条带处理</title>
+      <link>https://hzz12138.github.io/post/python%E7%89%88gee%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%9B%9B-l7%E5%BD%B1%E5%83%8F%E7%9A%84%E6%9D%A1%E5%B8%A6%E5%A4%84%E7%90%86/</link>
+      <pubDate>Thu, 15 Apr 2021 21:10:24 +0800</pubDate>
+      
+      <guid>https://hzz12138.github.io/post/python%E7%89%88gee%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%9B%9B-l7%E5%BD%B1%E5%83%8F%E7%9A%84%E6%9D%A1%E5%B8%A6%E5%A4%84%E7%90%86/</guid>
+      <description>Python版GEE学习笔记（四）-L7影像的条带处理 L7从2003年开始SLC坏了，影像出现了条带，具体原理就不放了。 80年代到2012年</description>
+    </item>
+    
+    <item>
+      <title>Python版GEE学习笔记（一）-环境配置</title>
+      <link>https://hzz12138.github.io/post/python%E7%89%88gee%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%80-%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</link>
       <pubDate>Wed, 14 Apr 2021 14:20:24 +0800</pubDate>
       
-      <guid>https://hzz12138.github.io/post/python%E7%89%88gee%E9%85%8D%E7%BD%AE/</guid>
-      <description>Python版Gee配置 1. Python环境配置 1.1 Python安装 Anaconda 是一个python的发行版，包括了python和很多常见的软件库, 和一个包</description>
+      <guid>https://hzz12138.github.io/post/python%E7%89%88gee%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%80-%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</guid>
+      <description>Python版GEE学习笔记（一）-环境配置 1. Python环境配置 1.1 Python安装 Anaconda 是一个python的发行版，包括了python和很多常</description>
     </item>
     
   </channel>
