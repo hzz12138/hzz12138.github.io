@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Python版GEE学习笔记（四）-L7影像的条带处理 - Hzz的地球调查组</title>
+  <title>Python版GEE学习笔记（二）-geemap - Hzz的地球调查组</title>
   <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="Zph" /><meta name="description" content="Python版GEE学习笔记（四）-L7影像的条带处理 L7从2003年开始SLC坏了，影像出现了条带，具体原理就不放了。 80年代到2012年" /><meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="Zph" /><meta name="description" content="Python版GEE学习笔记（二）-geemap geemap是吴秋生老师开发的python模块，可以极大地提高使用Python API GEE用户的" /><meta name="keywords" content="Hugo, theme, even" />
 
 
 
@@ -26,7 +26,7 @@
 <meta name="generator" content="Hugo 0.82.0 with theme even" />
 
 
-<link rel="canonical" href="https://hzz12138.github.io/post/python%E7%89%88gee%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%9B%9B-l7%E5%BD%B1%E5%83%8F%E7%9A%84%E6%9D%A1%E5%B8%A6%E5%A4%84%E7%90%86/" />
+<link rel="canonical" href="https://hzz12138.github.io/post/python%E7%89%88gee%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%BA%8C-geemap/" />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -39,20 +39,20 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<meta property="og:title" content="Python版GEE学习笔记（四）-L7影像的条带处理" />
-<meta property="og:description" content="Python版GEE学习笔记（四）-L7影像的条带处理 L7从2003年开始SLC坏了，影像出现了条带，具体原理就不放了。 80年代到2012年" />
+<meta property="og:title" content="Python版GEE学习笔记（二）-geemap" />
+<meta property="og:description" content="Python版GEE学习笔记（二）-geemap geemap是吴秋生老师开发的python模块，可以极大地提高使用Python API GEE用户的" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://hzz12138.github.io/post/python%E7%89%88gee%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%9B%9B-l7%E5%BD%B1%E5%83%8F%E7%9A%84%E6%9D%A1%E5%B8%A6%E5%A4%84%E7%90%86/" /><meta property="article:section" content="post" />
+<meta property="og:url" content="https://hzz12138.github.io/post/python%E7%89%88gee%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%BA%8C-geemap/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2021-04-15T21:10:24&#43;08:00" />
 <meta property="article:modified_time" content="2021-04-15T21:10:24&#43;08:00" />
 
-<meta itemprop="name" content="Python版GEE学习笔记（四）-L7影像的条带处理">
-<meta itemprop="description" content="Python版GEE学习笔记（四）-L7影像的条带处理 L7从2003年开始SLC坏了，影像出现了条带，具体原理就不放了。 80年代到2012年"><meta itemprop="datePublished" content="2021-04-15T21:10:24&#43;08:00" />
+<meta itemprop="name" content="Python版GEE学习笔记（二）-geemap">
+<meta itemprop="description" content="Python版GEE学习笔记（二）-geemap geemap是吴秋生老师开发的python模块，可以极大地提高使用Python API GEE用户的"><meta itemprop="datePublished" content="2021-04-15T21:10:24&#43;08:00" />
 <meta itemprop="dateModified" content="2021-04-15T21:10:24&#43;08:00" />
-<meta itemprop="wordCount" content="522">
+<meta itemprop="wordCount" content="264">
 <meta itemprop="keywords" content="Python,Google earth engine,jupyterlab," /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Python版GEE学习笔记（四）-L7影像的条带处理"/>
-<meta name="twitter:description" content="Python版GEE学习笔记（四）-L7影像的条带处理 L7从2003年开始SLC坏了，影像出现了条带，具体原理就不放了。 80年代到2012年"/>
+<meta name="twitter:title" content="Python版GEE学习笔记（二）-geemap"/>
+<meta name="twitter:description" content="Python版GEE学习笔记（二）-geemap geemap是吴秋生老师开发的python模块，可以极大地提高使用Python API GEE用户的"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -129,15 +129,15 @@
           <article class="post">
     
     <header class="post-header">
-      <h1 class="post-title">Python版GEE学习笔记（四）-L7影像的条带处理</h1>
+      <h1 class="post-title">Python版GEE学习笔记（二）-geemap</h1>
 
       <div class="post-meta">
         <span class="post-time"> 2021-04-15 </span>
         <div class="post-category">
             <a href="/categories/google-earth-engine/"> Google earth engine </a>
             </div>
-          <span class="more-meta"> 约 522 字 </span>
-          <span class="more-meta"> 预计阅读 2 分钟 </span>
+          <span class="more-meta"> 约 264 字 </span>
+          <span class="more-meta"> 预计阅读 1 分钟 </span>
         
       </div>
     </header>
@@ -147,72 +147,56 @@
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#python版gee学习笔记四-l7影像的条带处理">Python版GEE学习笔记（四）-L7影像的条带处理</a></li>
+    <li><a href="#python版gee学习笔记二-geemap">Python版GEE学习笔记（二）-geemap</a>
+      <ul>
+        <li><a href="#geemap的安装">geemap的安装</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
-      <h1 id="python版gee学习笔记四-l7影像的条带处理">Python版GEE学习笔记（四）-L7影像的条带处理</h1>
-<p><strong>L7从2003年开始SLC坏了，影像出现了条带，具体原理就不放了。</strong></p>
-<p><strong>80年代到2012年可用L5，2013年4月以后可用L8，中间的空档期如果需要Landsat数据就只能选L7。</strong></p>
-<p><strong>在GEE中处理L7条带有两种方式：</strong></p>
-<p><strong>1.用L8影像做一个镶嵌，补全缺失的地方，但如果时间在2012-2013年，还没有L8影像，就无法补全了。</strong></p>
-<p><strong>2.运用焦点统计功能，填补空白。</strong></p>
-<p><strong>我目前多用的是方法2，因此只写一下这部分，L8镶嵌的部分我截在后面，需要的可以学习一下。</strong></p>
-<p><strong>Python：</strong></p>
+      <h1 id="python版gee学习笔记二-geemap">Python版GEE学习笔记（二）-geemap</h1>
+<p><strong>geemap是吴秋生老师开发的python模块，可以极大地提高使用Python API GEE用户的使用体验（亲测好评），官方介绍如下：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/hzz12138/typora_img@master/img/image-20210415202520953.png" alt="image-20210415202520953"></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-xml" data-lang="xml">geemap官网：https://geemap.org/
+geemap Github: https://github.com/giswqs/geemap
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="geemap的安装">geemap的安装</h2>
+<p><strong>我是用的Anaconda，因此新建的env，即用红框里的操作。</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/hzz12138/typora_img@master/img/image-20210415202955554.png" alt="image-20210415202955554"></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">安装视频教程：https://www.youtube.com/watch?v=h0pz3S6Tvx0
+</code></pre></td></tr></table>
+</div>
+</div><p>安装好后，打开地图界面：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-python" data-lang="python"><span class="c1">#GEE实现此处理很简单，2个函数：focal_mean()、blend()，参数可调</span>
-<span class="k">def</span> <span class="nf">l7_fill</span><span class="p">(</span><span class="n">img</span><span class="p">):{</span>
-    <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">focal_mean</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;circle&#39;</span><span class="p">,</span><span class="s1">&#39;pixels&#39;</span><span class="p">,</span><span class="mi">8</span><span class="p">)</span><span class="o">.</span><span class="n">blend</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
-<span class="p">}</span>
-<span class="c1">#批量处理L7 ImageCollection</span>
-<span class="n">l7_col</span><span class="o">=</span><span class="n">l7_col</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">l7_fill</span><span class="p">)</span>
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">geemap</span>
+<span class="n">Map</span> <span class="o">=</span> <span class="n">geemap</span><span class="o">.</span><span class="n">Map</span><span class="p">()</span>
+<span class="n">Map</span>
 </code></pre></td></tr></table>
 </div>
-</div><p><strong>JS:</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">官方示例：https://code.earthengine.google.com/16e86cfbd845a7b583100cb8c27348e9
-</code></pre></td></tr></table>
-</div>
-</div><p><strong>两个函数的介绍：</strong></p>
-<p><img src="https://cdn.jsdelivr.net/gh/hzz12138/typora_img@master/img/image-20210415205915435.png" alt="image-20210415205915435"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/hzz12138/typora_img@master/img/image-20210415205947637.png" alt="image-20210415205947637"></p>
-<p>效果对比：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/hzz12138/typora_img@master/img/image-20210415210421965.png" alt="image-20210415210421965"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/hzz12138/typora_img@master/img/image-20210415210454557.png" alt="image-20210415210454557"></p>
-<p><strong>L8镶嵌：</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">原文链接(4.2.3部分)：https://open-mrv.readthedocs.io/en/latest/image_composite_Web.html
-</code></pre></td></tr></table>
-</div>
-</div><p><img src="https://cdn.jsdelivr.net/gh/hzz12138/typora_img@master/img/image-20210415210256772.png" alt="image-20210415210256772"></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">我的博客：https://hzz12138.github.io/
-</code></pre></td></tr></table>
-</div>
-</div>
+</div><p><img src="https://cdn.jsdelivr.net/gh/hzz12138/typora_img@master/img/image-20210415203255349.png" alt="image-20210415203255349"></p>
+<p>后续功能可查看吴老师的视频教程与Jupyter笔记本，非常棒！</p>
+
     </div>
 
     <div class="post-copyright">
@@ -237,13 +221,13 @@
           <a href="/tags/jupyterlab/">jupyterlab</a>
           </div>
       <nav class="post-nav">
-        <a class="prev" href="/post/python%E7%89%88gee%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%BA%8C-geemap/">
+        <a class="prev" href="/post/python%E7%89%88gee%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%89-%E5%BD%B1%E5%83%8F%E7%AD%9B%E9%80%89/">
             <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">Python版GEE学习笔记（二）-geemap</span>
+            <span class="prev-text nav-default">Python版GEE学习笔记（三）-影像筛选</span>
             <span class="prev-text nav-mobile">上一篇</span>
           </a>
-        <a class="next" href="/post/python%E7%89%88gee%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%80-%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">
-            <span class="next-text nav-default">Python版GEE学习笔记（一）-环境配置</span>
+        <a class="next" href="/post/python%E7%89%88gee%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%9B%9B-l7%E5%BD%B1%E5%83%8F%E7%9A%84%E6%9D%A1%E5%B8%A6%E5%A4%84%E7%90%86/">
+            <span class="next-text nav-default">Python版GEE学习笔记（四）-L7影像的条带处理</span>
             <span class="next-text nav-mobile">下一篇</span>
             <i class="iconfont icon-right"></i>
           </a>

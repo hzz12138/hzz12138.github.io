@@ -17,6 +17,15 @@
     </item>
     
     <item>
+      <title>Python版GEE学习笔记（二）-geemap</title>
+      <link>https://hzz12138.github.io/post/python%E7%89%88gee%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%BA%8C-geemap/</link>
+      <pubDate>Thu, 15 Apr 2021 21:10:24 +0800</pubDate>
+      
+      <guid>https://hzz12138.github.io/post/python%E7%89%88gee%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%BA%8C-geemap/</guid>
+      <description>Python版GEE学习笔记（二）-geemap geemap是吴秋生老师开发的python模块，可以极大地提高使用Python API GEE用户的</description>
+    </item>
+    
+    <item>
       <title>Python版GEE学习笔记（四）-L7影像的条带处理</title>
       <link>https://hzz12138.github.io/post/python%E7%89%88gee%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%9B%9B-l7%E5%BD%B1%E5%83%8F%E7%9A%84%E6%9D%A1%E5%B8%A6%E5%A4%84%E7%90%86/</link>
       <pubDate>Thu, 15 Apr 2021 21:10:24 +0800</pubDate>
