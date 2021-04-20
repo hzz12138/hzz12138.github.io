@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Python版GEE学习笔记（六）-Filter之外的另一种云量筛选方式 - Hzz的地球调查组</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Zph" /><meta name="description" content="Python版GEE学习笔记（六）-Filter之外的另一种云量筛选方式 在遥感影像处理中，云是很讨厌的东西。GEE里大量影像的处理也绕不开云" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.82.0 with theme even" />
+
+
+<link rel="canonical" href="https://hzz12138.github.io/post/python%E7%89%88gee%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%AD-filter%E4%B9%8B%E5%A4%96%E7%9A%84%E5%8F%A6%E4%B8%80%E7%A7%8D%E4%BA%91%E9%87%8F%E7%AD%9B%E9%80%89%E6%96%B9%E5%BC%8F/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Python版GEE学习笔记（六）-Filter之外的另一种云量筛选方式" />
+<meta property="og:description" content="Python版GEE学习笔记（六）-Filter之外的另一种云量筛选方式 在遥感影像处理中，云是很讨厌的东西。GEE里大量影像的处理也绕不开云" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://hzz12138.github.io/post/python%E7%89%88gee%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%AD-filter%E4%B9%8B%E5%A4%96%E7%9A%84%E5%8F%A6%E4%B8%80%E7%A7%8D%E4%BA%91%E9%87%8F%E7%AD%9B%E9%80%89%E6%96%B9%E5%BC%8F/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-04-20T16:50:24&#43;08:00" />
+<meta property="article:modified_time" content="2021-04-20T16:50:24&#43;08:00" />
+
+<meta itemprop="name" content="Python版GEE学习笔记（六）-Filter之外的另一种云量筛选方式">
+<meta itemprop="description" content="Python版GEE学习笔记（六）-Filter之外的另一种云量筛选方式 在遥感影像处理中，云是很讨厌的东西。GEE里大量影像的处理也绕不开云"><meta itemprop="datePublished" content="2021-04-20T16:50:24&#43;08:00" />
+<meta itemprop="dateModified" content="2021-04-20T16:50:24&#43;08:00" />
+<meta itemprop="wordCount" content="3735">
+<meta itemprop="keywords" content="Python,Google earth engine,jupyterlab," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Python版GEE学习笔记（六）-Filter之外的另一种云量筛选方式"/>
+<meta name="twitter:description" content="Python版GEE学习笔记（六）-Filter之外的另一种云量筛选方式 在遥感影像处理中，云是很讨厌的东西。GEE里大量影像的处理也绕不开云"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Hzz的地球调查组</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/%E5%85%B3%E4%BA%8E/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Hzz的地球调查组</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/%E5%85%B3%E4%BA%8E/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Python版GEE学习笔记（六）-Filter之外的另一种云量筛选方式</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-04-20 </span>
+        <div class="post-category">
+            <a href="/categories/google-earth-engine/"> Google earth engine </a>
+            </div>
+          <span class="more-meta"> 约 3735 字 </span>
+          <span class="more-meta"> 预计阅读 8 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#python版gee学习笔记六-filter之外的另一种云量筛选方式">Python版GEE学习笔记（六）-Filter之外的另一种云量筛选方式</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#1l8-toa代码实现">1.L8-TOA代码实现</a></li>
+            <li><a href="#2l8-sr代码实现">2.L8-SR代码实现</a></li>
+            <li><a href="#3s2代码实现">3.S2代码实现</a></li>
+            <li><a href="#4参考资料">4.参考资料</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="python版gee学习笔记六-filter之外的另一种云量筛选方式">Python版GEE学习笔记（六）-Filter之外的另一种云量筛选方式</h1>
+<p>在遥感影像处理中，云是很讨厌的东西。GEE里大量影像的处理也绕不开云，有两种方法摆脱云的干扰：</p>
+<p><strong>1.根据影像元数据中的云量百分比，通过Filter命令筛选无云或少云的影像。</strong></p>
+<p><strong>2.根据GEE自带的去云算法或QA波段去云，把云从影像中mask掉</strong></p>
+<p>通常这两种方法是结合使用的，<strong>先根据云量百分比筛除总云量过大的影像，再从筛选结果中运用去云算法去云</strong>。</p>
+<p>但在我的日常使用中，我的研究目标是湖泊，经常<strong>只需要一景影像中的一部分，而不是整景影像</strong>。</p>
+<p>运用上述常规方法可能会造成一种情况，即<strong>影像总云量处于较高水平，但研究区部分的云却很少</strong>。</p>
+<p>如果能<strong>仅计算研究区的云量</strong>，把研究区内无云的影像筛选出来。与仅利用Filter命令筛选元数据相比，对可用数据集是一个很大的扩充，并且在某些极端的情况（所需时间段的全景影像云量百分比都很大）可能会发挥用处。</p>
+<p>本着不浪费的原则。。可用的数据还是能多一点就多一点。。</p>
+<p>但个人觉得这样或许会造成一个问题，即：<strong>云在地面的阴影是否可能影响到非云区域的光谱？</strong></p>
+<p>这是睡前看斯诺克比赛发呆的时候脑袋闪出来的问题，起床以后简单实现了下。。<strong>原理上不知有没有问题，如有问题或意见欢迎各位老师指正，十分感谢！</strong></p>
+<p><strong>我做了简单的封装，按传感器类型（L8-TOA、L8-SR、S2-TOA、S2-SR）选用不同函数与计算方法，方便调用。但未加异常处理等步骤，如有BUG请指正。</strong></p>
+<p>其中L8-TOA用了<strong>ee.Algorithms.Landsat.simpleCloudScore()<strong>方法，其他影像用的</strong>QA波段</strong>，S2-TOA与S2-SR应该是通用，未测试。</p>
+<p>代码中print比较多，大批量运行时可适当注释掉。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">下文代码可从我的Github项目获取：
+https://github.com/hzz12138/learn_gee
+或我的博客复制：
+https://hzz12138.github.io/
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>研究区云量筛选实现思路：</strong></p>
+<p>1.选择collection</p>
+<p>2.利用研究区ROI裁剪影像集。</p>
+<p>3.根据传感器类型，采用不同方法计算当前研究区影像的云量百分比。</p>
+<p>4.按研究区内云量百分比筛出影像</p>
+<h3 id="1l8-toa代码实现">1.L8-TOA代码实现</h3>
+<h4 id="库的导入">库的导入</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">ee</span>
+<span class="kn">import</span> <span class="nn">geemap</span>
+<span class="c1"># 显示地图，并选中湖泊</span>
+<span class="n">Map</span> <span class="o">=</span> <span class="n">geemap</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="p">[</span><span class="mf">40.964</span><span class="p">,</span><span class="mf">108.884</span><span class="p">],</span><span class="n">zoom</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">Map</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="选择研究区">选择研究区</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="c1">#在地图中选择研究区，并转为ROI。选定好后再运行下两行代码</span>
+<span class="n">Map</span><span class="o">.</span><span class="n">draw_last_feature</span>
+<span class="n">roi</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">FeatureCollection</span><span class="p">(</span><span class="n">Map</span><span class="o">.</span><span class="n">draw_last_feature</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.jsdelivr.net/gh/hzz12138/typora_img@master/img/image-20210420143842754.png" alt="image-20210420143842754"></p>
+<h4 id="选择l8-toa影像">选择L8-TOA影像</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># 选择L8-TOA影像</span>
+<span class="n">l8_col</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">ImageCollection</span><span class="p">(</span><span class="s1">&#39;LANDSAT/LC08/C01/T1_TOA&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">filterBounds</span><span class="p">(</span><span class="n">roi</span><span class="p">)</span>\
+    <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ee</span><span class="o">.</span><span class="n">Filter</span><span class="o">.</span><span class="n">calendarRange</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span><span class="mi">2019</span><span class="p">,</span><span class="s1">&#39;year&#39;</span><span class="p">))</span>\
+    <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ee</span><span class="o">.</span><span class="n">Filter</span><span class="o">.</span><span class="n">calendarRange</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="s1">&#39;month&#39;</span><span class="p">))</span>\
+
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&#34;&#34;&#34;已选择{l8_col.size().getInfo()}景L8影像&#34;&#34;&#34;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">l8_col</span><span class="o">.</span><span class="n">aggregate_array</span><span class="p">(</span><span class="s1">&#39;system:index&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">getInfo</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">l8_col</span><span class="o">.</span><span class="n">aggregate_array</span><span class="p">(</span><span class="s1">&#39;CLOUD_COVER&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">getInfo</span><span class="p">())</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.jsdelivr.net/gh/hzz12138/typora_img@master/img/image-20210420162459164.png" alt="image-20210420162459164"></p>
+<h4 id="研究区云量计算及筛选">研究区云量计算及筛选</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">l8_toa_select_by_cloud</span><span class="p">(</span><span class="n">l8_col</span><span class="p">,</span><span class="n">roi</span><span class="p">,</span><span class="n">threshold</span><span class="p">):</span>
+    <span class="c1">##依次传入影像集合、研究区roi，云量阈值</span>
+    
+    <span class="c1">#计算l8_collection-Imagecollection中Image数量</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="n">l8_col</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+    <span class="c1">#定义图像裁剪函数</span>
+    <span class="k">def</span> <span class="nf">img_clip</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+        <span class="n">clip_img</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">roi</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">clip_img</span>        
+    
+    <span class="c1">#进行图像裁剪</span>
+    <span class="n">l8_col_clip</span> <span class="o">=</span> <span class="n">l8_col</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">img_clip</span><span class="p">)</span>
+    <span class="n">l8_col_clip_list</span> <span class="o">=</span> <span class="n">l8_col_clip</span><span class="o">.</span><span class="n">toList</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+    <span class="c1">#创建列表，用来存储满足的影像名</span>
+    <span class="n">nice_list</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="c1">#定义云量计算函数</span>
+    <span class="k">def</span> <span class="nf">l8_img_cloud_cal</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">Algorithms</span><span class="o">.</span><span class="n">Landsat</span><span class="o">.</span><span class="n">simpleCloudScore</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+        <span class="n">cloud</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">&#39;cloud&#39;</span><span class="p">)</span>
+        <span class="n">hist</span> <span class="o">=</span> <span class="n">cloud</span><span class="o">.</span><span class="n">reduceRegion</span><span class="p">(</span><span class="n">ee</span><span class="o">.</span><span class="n">Reducer</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span> <span class="n">roi</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()</span>
+        <span class="n">count_clear</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">hist</span><span class="p">[</span><span class="s1">&#39;cloud&#39;</span><span class="p">][</span><span class="s1">&#39;histogram&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">])</span>
+        <span class="n">count_sum</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">hist</span><span class="p">[</span><span class="s1">&#39;cloud&#39;</span><span class="p">][</span><span class="s1">&#39;histogram&#39;</span><span class="p">])</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&#34;&#34;&#34;
+</span><span class="s2">            {image.getInfo()[&#39;properties&#39;][&#39;system:index&#39;]}研究区云量为：{1-(count_clear/count_sum)},全景云量为:{image.getInfo()[&#39;properties&#39;][&#39;CLOUD_COVER&#39;]/100},
+</span><span class="s2">            被选中：{(1-(count_clear/count_sum))&lt;threshold}&#34;&#34;&#34;</span><span class="p">)</span>
+        <span class="k">if</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="p">(</span><span class="n">count_clear</span><span class="o">/</span><span class="n">count_sum</span><span class="p">))</span><span class="o">&lt;</span><span class="n">threshold</span><span class="p">):</span>
+            <span class="n">nice_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;LANDSAT/LC08/C01/T1_TOA/&#39;</span><span class="o">+</span><span class="n">image</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()[</span><span class="s1">&#39;properties&#39;</span><span class="p">][</span><span class="s1">&#39;system:index&#39;</span><span class="p">])</span>
+    
+    <span class="c1">#遍历Image，计算云量，获取满足条件的影像。</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">):</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span><span class="n">l8_col_clip_list</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&#34;&#34;&#34;第{i+1}景影像处理中，未提示为研究区内无云&#34;&#34;&#34;</span><span class="p">)</span>
+        <span class="n">l8_img_cloud_cal</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    
+    <span class="c1">#将选择的影像与少云影像集合合并</span>
+    <span class="n">selected_col</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">ImageCollection</span><span class="p">(</span><span class="n">nice_list</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">selected_col</span>
+    
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="函数运行">函数运行</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="n">result_col</span> <span class="o">=</span> <span class="n">l8_toa_select_by_cloud</span><span class="p">(</span><span class="n">l8_col</span><span class="p">,</span><span class="n">roi</span><span class="p">,</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&#34;&#34;&#34;共{result_col.size().getInfo()}景L8研究区无云影像&#34;&#34;&#34;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">result_col</span><span class="o">.</span><span class="n">aggregate_array</span><span class="p">(</span><span class="s1">&#39;system:index&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">getInfo</span><span class="p">())</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.jsdelivr.net/gh/hzz12138/typora_img@master/img/image-20210420162515203.png" alt="image-20210420162515203"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/hzz12138/typora_img@master/img/image-20210420162525642.png" alt="image-20210420162525642"></p>
+<h3 id="2l8-sr代码实现">2.L8-SR代码实现</h3>
+<h4 id="库的导入-1">库的导入</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">ee</span>
+<span class="kn">import</span> <span class="nn">geemap</span>
+<span class="c1"># 显示地图，并选中湖泊</span>
+<span class="n">Map</span> <span class="o">=</span> <span class="n">geemap</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="p">[</span><span class="mf">40.964</span><span class="p">,</span><span class="mf">108.884</span><span class="p">],</span><span class="n">zoom</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">Map</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="选择研究区-1">选择研究区</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="c1">#在地图中选择研究区，并转为ROI。选定好后再运行下两行代码</span>
+<span class="n">Map</span><span class="o">.</span><span class="n">draw_last_feature</span>
+<span class="n">roi</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">FeatureCollection</span><span class="p">(</span><span class="n">Map</span><span class="o">.</span><span class="n">draw_last_feature</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="选择l8-sr影像">选择L8-SR影像</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># 选择L8-SR影像</span>
+<span class="n">l8_col</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">ImageCollection</span><span class="p">(</span><span class="s1">&#39;LANDSAT/LC08/C01/T1_SR&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">filterBounds</span><span class="p">(</span><span class="n">roi</span><span class="p">)</span>\
+    <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ee</span><span class="o">.</span><span class="n">Filter</span><span class="o">.</span><span class="n">calendarRange</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span><span class="mi">2019</span><span class="p">,</span><span class="s1">&#39;year&#39;</span><span class="p">))</span>\
+    <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ee</span><span class="o">.</span><span class="n">Filter</span><span class="o">.</span><span class="n">calendarRange</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="s1">&#39;month&#39;</span><span class="p">))</span>\
+
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&#34;&#34;&#34;已选择{l8_col.size().getInfo()}景L8影像&#34;&#34;&#34;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">l8_col</span><span class="o">.</span><span class="n">aggregate_array</span><span class="p">(</span><span class="s1">&#39;system:index&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">getInfo</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">l8_col</span><span class="o">.</span><span class="n">aggregate_array</span><span class="p">(</span><span class="s1">&#39;CLOUD_COVER&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">getInfo</span><span class="p">())</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.jsdelivr.net/gh/hzz12138/typora_img@master/img/image-20210420162635307.png" alt="image-20210420162635307"></p>
+<h4 id="研究区云量计算及筛选-1">研究区云量计算及筛选</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">l8_sr_select_by_cloud</span><span class="p">(</span><span class="n">l8_col</span><span class="p">,</span><span class="n">roi</span><span class="p">,</span><span class="n">threshold</span><span class="p">):</span>
+    <span class="c1">##依次传入影像集合、研究区roi，云量阈值</span>
+    
+    <span class="c1">#计算l8_collection-Imagecollection中Image数量</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="n">l8_col</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+    <span class="c1">#定义图像裁剪函数</span>
+    <span class="k">def</span> <span class="nf">img_clip</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+        <span class="n">clip_img</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">roi</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">clip_img</span>        
+    
+    <span class="c1">#进行图像裁剪</span>
+    <span class="n">l8_col_clip</span> <span class="o">=</span> <span class="n">l8_col</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">img_clip</span><span class="p">)</span>
+    <span class="n">l8_col_clip_list</span> <span class="o">=</span> <span class="n">l8_col_clip</span><span class="o">.</span><span class="n">toList</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+    <span class="c1">#创建列表，用来存储满足</span>
+    <span class="n">nice_list</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="c1">#qa波段云量识别</span>
+    <span class="k">def</span> <span class="nf">rmCloud</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+        <span class="n">cloudShadowBitMask</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">cloudsBitMask</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="n">qa</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&#34;pixel_qa&#34;</span><span class="p">)</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">qa</span><span class="o">.</span><span class="n">bitwiseAnd</span><span class="p">(</span><span class="n">cloudShadowBitMask</span><span class="p">)</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> \
+                 <span class="o">.</span><span class="n">And</span><span class="p">(</span><span class="n">qa</span><span class="o">.</span><span class="n">bitwiseAnd</span><span class="p">(</span><span class="n">cloudsBitMask</span><span class="p">)</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">mask</span>   
+    
+    <span class="c1">#定义云量计算函数</span>
+    <span class="k">def</span> <span class="nf">l8_img_cloud_cal</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">rmCloud</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+        <span class="n">hist</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">reduceRegion</span><span class="p">(</span><span class="n">ee</span><span class="o">.</span><span class="n">Reducer</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">roi</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()</span>
+        <span class="c1">#print(hist[&#39;pixel_qa&#39;][&#39;histogram&#39;])</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">hist</span><span class="p">[</span><span class="s1">&#39;pixel_qa&#39;</span><span class="p">][</span><span class="s1">&#39;histogram&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">count_clear</span> <span class="o">=</span> <span class="n">hist</span><span class="p">[</span><span class="s1">&#39;pixel_qa&#39;</span><span class="p">][</span><span class="s1">&#39;histogram&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">count_sum</span> <span class="o">=</span> <span class="n">hist</span><span class="p">[</span><span class="s1">&#39;pixel_qa&#39;</span><span class="p">][</span><span class="s1">&#39;histogram&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">hist</span><span class="p">[</span><span class="s1">&#39;pixel_qa&#39;</span><span class="p">][</span><span class="s1">&#39;histogram&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&#34;&#34;&#34;{image.getInfo()[&#39;properties&#39;][&#39;system:index&#39;]}研究区云量为：{1-(count_clear/count_sum)},全景云量为:{image.getInfo()[&#39;properties&#39;][&#39;CLOUD_COVER&#39;]/100},
+</span><span class="s2">                被选中：{(1-(count_clear/count_sum))&lt;threshold}&#34;&#34;&#34;</span><span class="p">)</span>
+            <span class="k">if</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="p">(</span><span class="n">count_clear</span><span class="o">/</span><span class="n">count_sum</span><span class="p">))</span><span class="o">&lt;</span><span class="n">threshold</span><span class="p">):</span>
+                <span class="n">nice_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;LANDSAT/LC08/C01/T1_TOA/&#39;</span><span class="o">+</span><span class="n">image</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()[</span><span class="s1">&#39;properties&#39;</span><span class="p">][</span><span class="s1">&#39;system:index&#39;</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">hist</span><span class="p">[</span><span class="s1">&#39;pixel_qa&#39;</span><span class="p">][</span><span class="s1">&#39;histogram&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">count_sum</span> <span class="o">=</span> <span class="n">hist</span><span class="p">[</span><span class="s1">&#39;pixel_qa&#39;</span><span class="p">][</span><span class="s1">&#39;histogram&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">nice_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;LANDSAT/LC08/C01/T1_TOA/&#39;</span><span class="o">+</span><span class="n">image</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()[</span><span class="s1">&#39;properties&#39;</span><span class="p">][</span><span class="s1">&#39;system:index&#39;</span><span class="p">])</span>
+        <span class="c1">#return image</span>
+    
+    <span class="c1">#遍历Image，计算云量，获取满足条件的影像。</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">):</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span><span class="n">l8_col_clip_list</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&#34;&#34;&#34;第{i+1}景影像处理中，未提示为研究区内无云&#34;&#34;&#34;</span><span class="p">)</span>
+        <span class="n">l8_img_cloud_cal</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="c1">#print(nice_list)</span>
+    
+    <span class="c1">#将选择的影像与少云影像集合合并</span>
+    <span class="n">selected_col</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">ImageCollection</span><span class="p">(</span><span class="n">nice_list</span><span class="p">)</span>
+    <span class="c1">#result_col = cloudless_col.merge(selected_col)</span>
+    
+    <span class="k">return</span> <span class="n">selected_col</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="函数运行-1">函数运行</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="n">result_col</span> <span class="o">=</span> <span class="n">l8_sr_select_by_cloud</span><span class="p">(</span><span class="n">l8_col</span><span class="p">,</span><span class="n">roi</span><span class="p">,</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&#34;&#34;&#34;共{result_col.size().getInfo()}景L8研究区无云影像&#34;&#34;&#34;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">result_col</span><span class="o">.</span><span class="n">aggregate_array</span><span class="p">(</span><span class="s1">&#39;system:index&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">getInfo</span><span class="p">())</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.jsdelivr.net/gh/hzz12138/typora_img@master/img/image-20210420162738379.png" alt="image-20210420162738379"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/hzz12138/typora_img@master/img/image-20210420162745866.png" alt="image-20210420162745866"></p>
+<h3 id="3s2代码实现">3.S2代码实现</h3>
+<h4 id="库的导入-2">库的导入</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">ee</span>
+<span class="kn">import</span> <span class="nn">geemap</span>
+<span class="c1"># 显示地图，并选中湖泊</span>
+<span class="n">Map</span> <span class="o">=</span> <span class="n">geemap</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="p">[</span><span class="mf">40.964</span><span class="p">,</span><span class="mf">108.884</span><span class="p">],</span><span class="n">zoom</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">Map</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="选择研究区-2">选择研究区</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="c1">#在地图中选择研究区，并转为ROI。选定好后再运行下两行代码</span>
+<span class="n">Map</span><span class="o">.</span><span class="n">draw_last_feature</span>
+<span class="n">roi</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">FeatureCollection</span><span class="p">(</span><span class="n">Map</span><span class="o">.</span><span class="n">draw_last_feature</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="选择s2-toa影像">选择S2-TOA影像</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># 选择S2-TOA影像</span>
+<span class="n">s2_col</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">ImageCollection</span><span class="p">(</span><span class="s1">&#39;COPERNICUS/S2&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">filterBounds</span><span class="p">(</span><span class="n">roi</span><span class="p">)</span>\
+    <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ee</span><span class="o">.</span><span class="n">Filter</span><span class="o">.</span><span class="n">calendarRange</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span><span class="mi">2019</span><span class="p">,</span><span class="s1">&#39;year&#39;</span><span class="p">))</span>\
+    <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ee</span><span class="o">.</span><span class="n">Filter</span><span class="o">.</span><span class="n">calendarRange</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="s1">&#39;month&#39;</span><span class="p">))</span>\
+
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&#34;&#34;&#34;已选择{s2_col.size().getInfo()}景S2影像&#34;&#34;&#34;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">s2_col</span><span class="o">.</span><span class="n">aggregate_array</span><span class="p">(</span><span class="s1">&#39;system:index&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">getInfo</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">s2_col</span><span class="o">.</span><span class="n">aggregate_array</span><span class="p">(</span><span class="s1">&#39;CLOUDY_PIXEL_PERCENTAGE&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">getInfo</span><span class="p">())</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.jsdelivr.net/gh/hzz12138/typora_img@master/img/image-20210420162903903.png" alt="image-20210420162903903"></p>
+<h4 id="研究区云量计算及筛选-2">研究区云量计算及筛选</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">s2_toa_select_by_cloud</span><span class="p">(</span><span class="n">s2_col</span><span class="p">,</span><span class="n">roi</span><span class="p">,</span><span class="n">threshold</span><span class="p">):</span>
+    <span class="c1">##依次传入有云影像集合、无云影像集合、研究区roi，云量阈值</span>
+    
+    <span class="c1">#计算withcloud_collection-Imagecollection中Image数量</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="n">s2_col</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+    <span class="c1">#定义图像裁剪函数</span>
+    <span class="k">def</span> <span class="nf">img_clip</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+        <span class="n">clip_img</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">roi</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">clip_img</span>        
+    
+    <span class="c1">#进行图像裁剪</span>
+    <span class="n">s2_col_clip</span> <span class="o">=</span> <span class="n">s2_col</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">img_clip</span><span class="p">)</span>
+    <span class="n">s2_col_clip_list</span> <span class="o">=</span> <span class="n">s2_col_clip</span><span class="o">.</span><span class="n">toList</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+    <span class="c1">#创建列表，用来存储满足</span>
+    <span class="n">nice_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">rmCloud</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+        <span class="n">qa</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">&#39;QA60&#39;</span><span class="p">)</span>
+        <span class="n">cloudBitMask</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">10</span>
+        <span class="n">cirrusBitMask</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">11</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">qa</span><span class="o">.</span><span class="n">bitwiseAnd</span><span class="p">(</span><span class="n">cloudBitMask</span><span class="p">)</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> \
+                <span class="o">.</span><span class="n">And</span><span class="p">(</span><span class="n">qa</span><span class="o">.</span><span class="n">bitwiseAnd</span><span class="p">(</span><span class="n">cirrusBitMask</span><span class="p">)</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">mask</span>
+
+    
+    <span class="c1">#定义云量计算函数</span>
+    <span class="k">def</span> <span class="nf">s2_img_cloud_cal</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">rmCloud</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+        <span class="n">hist</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">reduceRegion</span><span class="p">(</span><span class="n">ee</span><span class="o">.</span><span class="n">Reducer</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">roi</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">hist</span><span class="p">[</span><span class="s1">&#39;QA60&#39;</span><span class="p">][</span><span class="s1">&#39;histogram&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">count_clear</span> <span class="o">=</span> <span class="n">hist</span><span class="p">[</span><span class="s1">&#39;QA60&#39;</span><span class="p">][</span><span class="s1">&#39;histogram&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">count_sum</span> <span class="o">=</span> <span class="n">hist</span><span class="p">[</span><span class="s1">&#39;QA60&#39;</span><span class="p">][</span><span class="s1">&#39;histogram&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">hist</span><span class="p">[</span><span class="s1">&#39;QA60&#39;</span><span class="p">][</span><span class="s1">&#39;histogram&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&#34;&#34;&#34;{image.getInfo()[&#39;properties&#39;][&#39;system:index&#39;]}研究区云量为：{1-(count_clear/count_sum)},全景云量为:{image.getInfo()[&#39;properties&#39;][&#39;CLOUDY_PIXEL_PERCENTAGE&#39;]/100},
+</span><span class="s2">                被选中：{(1-(count_clear/count_sum))&lt;threshold}&#34;&#34;&#34;</span><span class="p">)</span>
+            <span class="k">if</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="p">(</span><span class="n">count_clear</span><span class="o">/</span><span class="n">count_sum</span><span class="p">))</span><span class="o">&lt;</span><span class="n">threshold</span><span class="p">):</span>
+                <span class="n">nice_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;COPERNICUS/S2/&#39;</span><span class="o">+</span><span class="n">image</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()[</span><span class="s1">&#39;properties&#39;</span><span class="p">][</span><span class="s1">&#39;system:index&#39;</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">hist</span><span class="p">[</span><span class="s1">&#39;QA60&#39;</span><span class="p">][</span><span class="s1">&#39;histogram&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">count_sum</span> <span class="o">=</span> <span class="n">hist</span><span class="p">[</span><span class="s1">&#39;QA60&#39;</span><span class="p">][</span><span class="s1">&#39;histogram&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1">#             print(f&#34;&#34;&#34;</span>
+<span class="c1">#                 {image.getInfo()[&#39;properties&#39;][&#39;system:index&#39;]}研究区云量为：{0},全景云量为:{image.getInfo()[&#39;properties&#39;][&#39;CLOUDY_PIXEL_PERCENTAGE&#39;]/100},</span>
+<span class="c1">#                 被选中：{0&lt;threshold}&#34;&#34;&#34;)</span>
+            <span class="n">nice_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;COPERNICUS/S2/&#39;</span><span class="o">+</span><span class="n">image</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()[</span><span class="s1">&#39;properties&#39;</span><span class="p">][</span><span class="s1">&#39;system:index&#39;</span><span class="p">])</span>
+    
+    <span class="c1">#遍历Image，计算云量，获取满足条件的影像。</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">):</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span><span class="n">s2_col_clip_list</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&#34;&#34;&#34;第{i+1}景影像处理中，未提示为研究区内无云&#34;&#34;&#34;</span><span class="p">)</span>
+        <span class="n">s2_img_cloud_cal</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    
+    <span class="c1">#将选择的影像与少云影像集合合并</span>
+    <span class="n">selected_col</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">ImageCollection</span><span class="p">(</span><span class="n">nice_list</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">selected_col</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="函数运行-2">函数运行</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="n">result_col</span> <span class="o">=</span> <span class="n">s2_toa_select_by_cloud</span><span class="p">(</span><span class="n">s2_col</span><span class="p">,</span><span class="n">roi</span><span class="p">,</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&#34;&#34;&#34;共{result_col.size().getInfo()}景s2研究区无云影像&#34;&#34;&#34;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">result_col</span><span class="o">.</span><span class="n">aggregate_array</span><span class="p">(</span><span class="s1">&#39;system:index&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">getInfo</span><span class="p">())</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.jsdelivr.net/gh/hzz12138/typora_img@master/img/image-20210420163003499.png" alt="image-20210420163003499"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/hzz12138/typora_img@master/img/image-20210420163013468.png" alt="image-20210420163013468"></p>
+<h3 id="4参考资料">4.参考资料</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">知乎-无形的风：GEE教程基础篇-v3
+https://developers.google.com/earth-engine/tutorials/edu?hl=en
+https://drive.google.com/file/d/1i0xGC1uH9YPukyJgA1FYRjRtn0keVFYo/view
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>如果能帮到你，点个赞吧！十分感谢！</strong></p>
+<p><strong>如需转载，请于后台联系~</strong></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Zph</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-04-20
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/python/">Python</a>
+          <a href="/tags/google-earth-engine/">Google earth engine</a>
+          <a href="/tags/jupyterlab/">jupyterlab</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/python%E7%89%88gee%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%BA%94-%E8%87%AA%E5%8A%A8%E9%98%88%E5%80%BCotsu%E7%AE%97%E6%B3%95%E7%9A%84%E5%AE%9E%E7%8E%B0/">
+            <span class="next-text nav-default">Python版GEE学习笔记（五）-自动阈值（otsu算法的实现）</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:hhs_zph@mail.imu.edu.cn" class="iconfont icon-email" title="email"></a>
+      <a href="https://weibo.com/5348738349/profile?topnav=1&amp;wvr=6" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://space.bilibili.com/37232729" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://hzz12138.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Zph</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
